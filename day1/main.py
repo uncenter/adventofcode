@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 elf_calories = {}
 with open('day1/input.txt') as f:
     lines = f.readlines()
