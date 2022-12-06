@@ -1,4 +1,3 @@
-from funcenter import uncharsplit
 def fill_in_range(nums):
     a = int(nums[0])
     b = int(nums[1])
@@ -30,3 +29,22 @@ with open('day4/input.txt') as f:
 
 print(count)
 # 644
+#------PART 2------#
+count = 0
+with open('day4/input.txt') as f:
+    lines = f.readlines()
+    for line in lines:
+        pairs = line.split(',')
+        rangeA = pairs[0].split('-')
+        if '\n' in pairs[1]:
+            rangeB = (pairs[1][:len(pairs[1])-1]).split('-')
+        else:
+            rangeB = pairs[1].split('-')
+        rangeA = (fill_in_range(rangeA))
+        rangeB = (fill_in_range(rangeB))
+        #print(rangeA, rangeB)
+        check =  any(item in rangeA for item in rangeB)
+        if check:
+            count += 1
+print(count)
+# 926
