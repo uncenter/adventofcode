@@ -19,14 +19,14 @@ with open('day4/input.txt') as f:
             rangeB = (pairs[1][:len(pairs[1])-1]).split('-')
         else:
             rangeB = pairs[1].split('-')
-        rangeA = uncharsplit(fill_in_range(rangeA))
-        rangeB = uncharsplit(fill_in_range(rangeB))
-        if rangeA == rangeB:
-            pass
-        elif rangeA in rangeB:
+        rangeA = (fill_in_range(rangeA))
+        rangeB = (fill_in_range(rangeB))
+        #print(rangeA, rangeB)
+        checkA =  all(item in rangeA for item in rangeB)
+        checkB =  all(item in rangeB for item in rangeA)
+        if checkA or checkB:
             count += 1
-        elif rangeB in rangeA:
-            count += 1
+            
 
 print(count)
-# 655
+# 644
