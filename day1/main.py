@@ -19,6 +19,5 @@ sorted_elf_calories = sorted(elf_calories.items(), key=lambda x:x[1], reverse = 
 print(sorted_elf_calories[0])
 # ('elf65', 70698)
 #------PART 2------#
-top_elf_calories = sorted_elf_calories[0][1] + sorted_elf_calories[1][1] + sorted_elf_calories[2][1]
-print(top_elf_calories)
+print(sorted_elf_calories[0][1] + sorted_elf_calories[1][1] + sorted_elf_calories[2][1])
 # 206643
