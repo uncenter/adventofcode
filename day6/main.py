@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from funcenter import charsplit
 with open('day6/input.txt') as f:
     lines = f.readlines()

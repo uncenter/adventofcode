@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import string
 alphabet = string.ascii_uppercase
 stacks = []
