@@ -5,39 +5,23 @@ export const one = (data: string): number =>
 	data
 		.split("\n")
 		.map((line) => [...line].filter(Number))
-		.map((nums) =>
-			Number.parseInt(
-				nums.length >= 2 ? nums[0] + nums[nums.length - 1] : nums[0] + nums[0]
-			)
-		)
+		.map((nums) => Number.parseInt(nums[0] + nums.at(-1)))
 		.reduce((acc, curr) => acc + curr, 0);
 
 export const two = (data: string): number =>
 	data
 		.split("\n")
 		.map((line) =>
-			Number.parseInt(
-				[
-					...line.matchAll(
-						new RegExp(
-							`(?=(${Object.keys(SPELLED_OUT_NUMBERS).join("|")}|\\d))`,
-							"g"
-						)
-					),
-				]
-					.map((x) => SPELLED_OUT_NUMBERS[x[1]]?.toString() || x[1])
-					.reduce(
-						(acc, num, index, nums) =>
-							acc +
-							(index === 0
-								? nums.length >= 2
-									? nums[0] + nums.at(-1)
-									: nums[0] + nums[0]
-								: ""),
-						""
+			[
+				...line.matchAll(
+					new RegExp(
+						`(?=(${Object.keys(SPELLED_OUT_NUMBERS).join("|")}|\\d))`,
+						"g"
 					)
-			)
+				),
+			].map((match) => SPELLED_OUT_NUMBERS[match[1]]?.toString() || match[1])
 		)
+		.map((nums) => Number.parseInt(nums[0] + nums.at(-1)))
 		.reduce((acc, curr) => acc + curr, 0);
 
 const challenge = new Challenge({
