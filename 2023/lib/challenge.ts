@@ -1,19 +1,16 @@
 import type { LazyFile, Sample, Samples, Solution, Solutions } from "./types";
 
-import {
-	bgBlue,
-	bgGreen,
-	bgRed,
-	bgYellow,
-	blue,
-	bold,
-	gray,
-	green,
-	red,
-	yellow,
-} from "kleur/colors";
+import pc from "picocolors";
+
 import { join } from "path";
 import { Term, indent } from "./utils";
+
+const PASS = pc.bold(pc.inverse(pc.green(" PASS ")));
+const FAIL = pc.bold(pc.inverse(pc.green(" FAIL ")));
+const TEST = pc.bold(pc.inverse(pc.blue(" TEST ")));
+const RUN = pc.bold(pc.inverse(pc.yellow(" RUN ")));
+
+const FILLER_CHAR = "⎯";
 
 export class Challenge {
 	private location: {
@@ -45,12 +42,12 @@ export class Challenge {
 		const result = solution(input);
 
 		if (result !== expected) {
-			console.log(`${bgRed(bold(" FAIL "))} ${red(
+			console.log(`${FAIL} ${pc.red(
 				`Received incorrect result from solution ${name}.`
 			)}
 
 ${indent(
-	`${green(`- ${expected}`)}\n${red(`- ${result}`)}\n\n${gray(
+	`${pc.green(`- ${expected}`)}\n${pc.red(`- ${result}`)}\n\n${pc.dim(
 		"Input:"
 	)}\n${indent(input, " ".repeat(4))}`,
 	" ".repeat(4)
@@ -58,9 +55,7 @@ ${indent(
 `);
 		} else {
 			console.log(
-				`${bgGreen(bold(" PASS "))} ${green(
-					`No issues found with solution ${name}.`
-				)}`
+				`${PASS} ${pc.green(`No issues found with solution ${name}.`)}`
 			);
 		}
 		return result === expected;
@@ -68,18 +63,18 @@ ${indent(
 
 	test() {
 		if (Object.entries(this.samples).length === 0) {
-			console.log(bgRed(" ERROR "), "No sample problems defined.");
+			Term.error("No sample problems defined.");
 			return false;
 		}
 
 		Term.heading(
-			`${bgBlue(bold(" TEST "))} ${blue(this.location.file)}`,
-			blue("⎯")
+			`${TEST} ${pc.blue(this.location.file)}`,
+			pc.blue(FILLER_CHAR)
 		);
 
 		if (this.samples.one) {
 			if (!this.solutions.one) {
-				console.log(bgRed(" ERROR "), "Solution for 'one' does not exist.");
+				Term.error("Solution for one does not exist.");
 			} else {
 				this.try(this.samples.one, this.solutions.one, "one");
 			}
@@ -87,7 +82,7 @@ ${indent(
 
 		if (this.samples.two) {
 			if (!this.solutions.two) {
-				console.log(bgRed(" ERROR "), "Solution for 'two' does not exist.");
+				Term.error("Solution for two does not exist.");
 			} else {
 				this.try(this.samples.two, this.solutions.two, "two");
 			}
@@ -96,7 +91,7 @@ ${indent(
 
 	async run() {
 		if (Object.entries(this.solutions).length === 0) {
-			console.log(bgRed(" ERROR "), "No solutions defined.");
+			Term.error("No solutions defined.");
 			return;
 		}
 
@@ -106,33 +101,31 @@ ${indent(
 			const file = await this.input.text();
 
 			Term.heading(
-				`${bgYellow(bold(" RUN "))} ${yellow(this.location.file)}`,
-				yellow("⎯")
+				`${RUN} ${pc.yellow(this.location.file)}`,
+				pc.yellow(FILLER_CHAR)
 			);
 
-			console.log(`${gray("Input:")} ${this.location.input}`);
+			console.log(`${pc.dim("Input:")} ${this.location.input}`);
 
 			for (const [name, func] of Object.entries(this.solutions)) {
 				current = name;
-				console.log(`${bold(`\nRunning solution ${name}...`)}`);
+				console.log(`${pc.bold(`\nRunning solution ${name}...`)}`);
 
 				const start = performance.now();
 				const result = func(file);
 				const duration = (performance.now() - start).toFixed(2);
 
 				console.log(
-					`${gray("Result:")} ${result}\n${gray("Duration:")} ${duration}ms`
+					`${pc.dim("Result:")} ${result}\n${pc.dim("Duration:")} ${duration}ms`
 				);
 			}
 		} catch (error) {
 			if ((error as Error).name === "ENOENT") {
-				console.log(
-					bgRed(" ERROR "),
+				Term.error(
 					`Something went wrong reading input file '${this.location.input}'.`
 				);
 			} else {
-				console.log(
-					bgRed(" ERROR "),
+				Term.error(
 					`Something went wrong while executing solution ${current}...`
 				);
 			}
