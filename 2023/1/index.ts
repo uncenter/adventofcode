@@ -1,11 +1,5 @@
-import { join } from "path";
-
-let sample = `1abc2
-pqr3stu8vwx
-a1b2c3d4e5f
-treb7uchet`;
-
-const input = Bun.file(join(import.meta.dir, "./input.txt"));
+import { Challenge } from "../lib/challenge";
+import { SPELLED_OUT_NUMBERS } from "../src/constants";
 
 export const one = (data: string): number =>
 	data
@@ -18,23 +12,6 @@ export const one = (data: string): number =>
 		)
 		.reduce((acc, curr) => acc + curr, 0);
 
-// console.log(one(sample) === 142);
-// true
-// console.log(one(await input.text()));
-// 55816
-
-const num_strings: Record<string, number> = {
-	one: 1,
-	two: 2,
-	three: 3,
-	four: 4,
-	five: 5,
-	six: 6,
-	seven: 7,
-	eight: 8,
-	nine: 9,
-};
-
 export const two = (data: string): number =>
 	data
 		.split("\n")
@@ -42,11 +19,13 @@ export const two = (data: string): number =>
 			Number.parseInt(
 				[
 					...line.matchAll(
-						new RegExp(`(?=(${Object.keys(num_strings).join("|")}|\\d))`, "g")
+						new RegExp(
+							`(?=(${Object.keys(SPELLED_OUT_NUMBERS).join("|")}|\\d))`,
+							"g"
+						)
 					),
 				]
-					.map((x) => x[1])
-					.map((num_str) => num_strings[num_str]?.toString() || num_str)
+					.map((x) => SPELLED_OUT_NUMBERS[x[1]]?.toString() || x[1])
 					.reduce(
 						(acc, num, index, nums) =>
 							acc +
@@ -61,15 +40,32 @@ export const two = (data: string): number =>
 		)
 		.reduce((acc, curr) => acc + curr, 0);
 
-sample = `two1nine
+const challenge = new Challenge({
+	dir: import.meta.dir,
+	samples: {
+		one: [
+			`1abc2
+pqr3stu8vwx
+a1b2c3d4e5f
+treb7uchet`,
+			142,
+		],
+		two: [
+			`two1nine
 eightwothree
 abcone2threexyz
 xtwone3four
 4nineeightseven2
 zoneight234
-7pqrstsixteen`;
+7pqrstsixteen`,
+			282,
+		],
+	},
+	solutions: {
+		one,
+		two,
+	},
+});
 
-// console.log(two(sample) === 281);
-// true
-// console.log(two(await input.text()));
-// 54980
+challenge.test();
+challenge.run();
