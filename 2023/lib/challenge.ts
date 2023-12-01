@@ -2,7 +2,7 @@ import type { LazyFile, Sample, Samples, Solution, Solutions } from "./types";
 
 import pc from "picocolors";
 
-import { join } from "path";
+import { join } from "node:path";
 import { Term, indent } from "./utils";
 
 const PASS = pc.bold(pc.inverse(pc.green(" PASS ")));
