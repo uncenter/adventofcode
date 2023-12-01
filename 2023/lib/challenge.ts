@@ -46,25 +46,27 @@ export class Challenge {
 
 		if (result !== expected) {
 			console.log(`${bgRed(bold(" FAIL "))} ${red(
-				`Incorrect outcome of solution '${name}'.`
+				`Received incorrect result from solution ${name}.`
 			)}
 
-${green(`- ${expected}`)}
-${red(`- ${result}`)}
-
-${gray("Input:")}
-${indent(input, "    ")}`);
+${indent(
+	`${green(`- ${expected}`)}\n${red(`- ${result}`)}\n\n${gray(
+		"Input:"
+	)}\n${indent(input, " ".repeat(4))}`,
+	" ".repeat(4)
+)}
+`);
 		} else {
 			console.log(
 				`${bgGreen(bold(" PASS "))} ${green(
-					`No issues found with solution '${name}'.`
+					`No issues found with solution ${name}.`
 				)}`
 			);
 		}
 		return result === expected;
 	}
 
-	test(): boolean {
+	test() {
 		if (Object.entries(this.samples).length === 0) {
 			console.log(bgRed(" ERROR "), "No sample problems defined.");
 			return false;
@@ -72,17 +74,14 @@ ${indent(input, "    ")}`);
 
 		Term.heading(
 			`${bgBlue(bold(" TEST "))} ${blue(this.location.file)}`,
-			blue("-")
+			blue("⎯")
 		);
-
-		let result = true;
 
 		if (this.samples.one) {
 			if (!this.solutions.one) {
 				console.log(bgRed(" ERROR "), "Solution for 'one' does not exist.");
 			} else {
-				result =
-					result && this.try(this.samples.one, this.solutions.one, "one");
+				this.try(this.samples.one, this.solutions.one, "one");
 			}
 		}
 
@@ -90,12 +89,9 @@ ${indent(input, "    ")}`);
 			if (!this.solutions.two) {
 				console.log(bgRed(" ERROR "), "Solution for 'two' does not exist.");
 			} else {
-				result =
-					result && this.try(this.samples.two, this.solutions.two, "two");
+				this.try(this.samples.two, this.solutions.two, "two");
 			}
 		}
-
-		return result;
 	}
 
 	async run() {
@@ -111,14 +107,14 @@ ${indent(input, "    ")}`);
 
 			Term.heading(
 				`${bgYellow(bold(" RUN "))} ${yellow(this.location.file)}`,
-				yellow("-")
+				yellow("⎯")
 			);
 
 			console.log(`${gray("Input:")} ${this.location.input}`);
 
 			for (const [name, func] of Object.entries(this.solutions)) {
 				current = name;
-				console.log(`${bold(`\nTesting solution '${name}'...`)}`);
+				console.log(`${bold(`\nRunning solution ${name}...`)}`);
 
 				const start = performance.now();
 				const result = func(file);
@@ -137,7 +133,7 @@ ${indent(input, "    ")}`);
 			} else {
 				console.log(
 					bgRed(" ERROR "),
-					`Something went wrong while executing solution '${current}'...`
+					`Something went wrong while executing solution ${current}...`
 				);
 			}
 		}

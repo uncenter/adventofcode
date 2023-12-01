@@ -7,7 +7,7 @@ export const Term = {
 		);
 	},
 	heading: function (text: string, filler: string) {
-		text = ` ${text} `;
+		text = `  ${text}  `;
 		const fill = filler.repeat(
 			(process.stdout.columns - this.strip(text).length) / 2
 		);
