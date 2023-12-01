@@ -11,7 +11,7 @@ export const Term = {
 		const fill = filler.repeat(
 			(process.stdout.columns - this.strip(text).length) / 2
 		);
-		console.log(`${fill}${text}${fill}\n`);
+		console.log(`\n${fill}${text}${fill}\n`);
 	},
 };
 

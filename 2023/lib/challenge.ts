@@ -1,22 +1,18 @@
 import type { LazyFile, Sample, Samples, Solution, Solutions } from "./types";
 
-import { join } from "path";
 import {
-	red,
-	green,
-	bgRed,
+	bgBlue,
 	bgGreen,
+	bgRed,
+	bgYellow,
+	blue,
 	bold,
 	gray,
-	bgBlue,
-	blue,
-	bgCyan,
-	cyan,
-	bgWhite,
-	underline,
-	bgYellow,
+	green,
+	red,
 	yellow,
 } from "kleur/colors";
+import { join } from "path";
 import { Term, indent } from "./utils";
 
 export class Challenge {
@@ -57,8 +53,7 @@ ${green(`- ${expected}`)}
 ${red(`- ${result}`)}
 
 ${gray("Input:")}
-${indent(input, "    ")}
-`);
+${indent(input, "    ")}`);
 		} else {
 			console.log(
 				`${bgGreen(bold(" PASS "))} ${green(
@@ -70,36 +65,81 @@ ${indent(input, "    ")}
 	}
 
 	test(): boolean {
+		if (Object.entries(this.samples).length === 0) {
+			console.log(bgRed(" ERROR "), "No sample problems defined.");
+			return false;
+		}
+
 		Term.heading(
 			`${bgBlue(bold(" TEST "))} ${blue(this.location.file)}`,
 			blue("-")
 		);
-		return (
-			this.try(this.samples.one, this.solutions.one, "one") &&
-			this.try(this.samples.two, this.solutions.two, "two")
-		);
+
+		let result = true;
+
+		if (this.samples.one) {
+			if (!this.solutions.one) {
+				console.log(bgRed(" ERROR "), "Solution for 'one' does not exist.");
+			} else {
+				result =
+					result && this.try(this.samples.one, this.solutions.one, "one");
+			}
+		}
+
+		if (this.samples.two) {
+			if (!this.solutions.two) {
+				console.log(bgRed(" ERROR "), "Solution for 'two' does not exist.");
+			} else {
+				result =
+					result && this.try(this.samples.two, this.solutions.two, "two");
+			}
+		}
+
+		return result;
 	}
 
 	async run() {
-		const file = await this.input.text();
+		if (Object.entries(this.solutions).length === 0) {
+			console.log(bgRed(" ERROR "), "No solutions defined.");
+			return;
+		}
 
-		Term.heading(
-			`${bgYellow(bold(" RUN "))} ${yellow(this.location.file)}`,
-			yellow("-")
-		);
+		let current = "unknown";
 
-		console.log(`${gray("Input:")} ${this.location.input}`);
+		try {
+			const file = await this.input.text();
 
-		for (const [name, func] of Object.entries(this.solutions)) {
-			console.log(`${bold(`\nTesting solution '${name}'...`)}`);
-
-			const start = performance.now();
-			const result = func(file);
-			const duration = (performance.now() - start).toFixed(2);
-
-			console.log(
-				`${gray("Result:")} ${result}\n${gray("Duration:")} ${duration}ms`
+			Term.heading(
+				`${bgYellow(bold(" RUN "))} ${yellow(this.location.file)}`,
+				yellow("-")
 			);
+
+			console.log(`${gray("Input:")} ${this.location.input}`);
+
+			for (const [name, func] of Object.entries(this.solutions)) {
+				current = name;
+				console.log(`${bold(`\nTesting solution '${name}'...`)}`);
+
+				const start = performance.now();
+				const result = func(file);
+				const duration = (performance.now() - start).toFixed(2);
+
+				console.log(
+					`${gray("Result:")} ${result}\n${gray("Duration:")} ${duration}ms`
+				);
+			}
+		} catch (error) {
+			if ((error as Error).name === "ENOENT") {
+				console.log(
+					bgRed(" ERROR "),
+					`Something went wrong reading input file '${this.location.input}'.`
+				);
+			} else {
+				console.log(
+					bgRed(" ERROR "),
+					`Something went wrong while executing solution '${current}'...`
+				);
+			}
 		}
 	}
 }
