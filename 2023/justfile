@@ -1,8 +1,0 @@
-all:
-  -bun run **/index.ts
-
-run DAY:
-  -bun run {{DAY}}/index.ts
-
-init DAY:
-  -AOC_INIT_DAY={{DAY}} bun run lib/new.ts

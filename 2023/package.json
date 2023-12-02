@@ -1,6 +1,7 @@
 {
 	"scripts": {
-		"format": "biome format . --write"
+		"format": "biome format . --write",
+		"aoc": "bun run lib/bin.ts"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.4.1",
