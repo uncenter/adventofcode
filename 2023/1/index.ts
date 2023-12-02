@@ -16,15 +16,15 @@ export const two = (data: string): number =>
 				...line.matchAll(
 					new RegExp(
 						`(?=(${Object.keys(SPELLED_OUT_NUMBERS).join("|")}|\\d))`,
-						"g"
-					)
+						"g",
+					),
 				),
-			].map((match) => SPELLED_OUT_NUMBERS[match[1]]?.toString() || match[1])
+			].map((match) => SPELLED_OUT_NUMBERS[match[1]] || match[1]),
 		)
 		.map((nums) => Number.parseInt(nums[0] + nums.at(-1)))
 		.reduce((acc, curr) => acc + curr, 0);
 
-const challenge = new Challenge({
+export const challenge = new Challenge({
 	dir: import.meta.dir,
 	samples: {
 		one: [
@@ -50,6 +50,3 @@ zoneight234
 		two,
 	},
 });
-
-challenge.test();
-challenge.run();
