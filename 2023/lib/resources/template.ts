@@ -5,7 +5,7 @@ export const one = (data: string) => {};
 
 export const two = (data: string) => {};
 
-const challenge = new Challenge({
+export const challenge = new Challenge({
 	samples: {},
 	solutions: {},
 });
