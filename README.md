@@ -5,11 +5,15 @@
 ## 2023
 
 ```sh
-just run <DAY>
+bun aoc run <RANGE>
 ```
 
 ```sh
-just all
+bun aoc run 1
+```
+
+```sh
+bun aoc run 3..5
 ```
 
 ## 2022
