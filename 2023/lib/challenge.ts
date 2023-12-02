@@ -1,38 +1,19 @@
-import type { LazyFile, Sample, Samples, Solution, Solutions } from "./types";
+import type { Sample, Samples, Solution, Solutions } from "./types";
 
 import pc from "picocolors";
 
-import { join } from "node:path";
 import { Term, indent } from "./utils";
 
 const PASS = pc.bold(pc.inverse(pc.green(" PASS ")));
-const FAIL = pc.bold(pc.inverse(pc.green(" FAIL ")));
+const FAIL = pc.bold(pc.inverse(pc.red(" FAIL ")));
 const TEST = pc.bold(pc.inverse(pc.blue(" TEST ")));
 const RUN = pc.bold(pc.inverse(pc.yellow(" RUN ")));
 
-const FILLER_CHAR = "⎯";
-
 export class Challenge {
-	private location: {
-		dir: string;
-		input: string;
-		file: string;
-	};
-	private input: LazyFile;
 	private samples: Samples;
 	private solutions: Solutions;
 
-	constructor(options: {
-		dir: string;
-		samples: Samples;
-		solutions: Solutions;
-	}) {
-		this.location = {
-			dir: options.dir,
-			input: join(options.dir, "./input.txt"),
-			file: join(options.dir, "./index.ts"),
-		};
-		this.input = Bun.file(this.location.input);
+	constructor(options: { samples: Samples; solutions: Solutions }) {
 		this.samples = options.samples;
 		this.solutions = options.solutions;
 	}
@@ -61,16 +42,13 @@ ${indent(
 		return result === expected;
 	}
 
-	test() {
+	test(options: { file: string; input: string }) {
 		if (Object.entries(this.samples).length === 0) {
 			Term.error("No sample problems defined.");
 			return false;
 		}
 
-		Term.heading(
-			`${TEST} ${pc.blue(this.location.file)}`,
-			pc.blue(FILLER_CHAR)
-		);
+		console.log(`\n${TEST} ${pc.blue(options.file)}\n`);
 
 		if (this.samples.one) {
 			if (!this.solutions.one) {
@@ -89,7 +67,7 @@ ${indent(
 		}
 	}
 
-	async run() {
+	async run(options: { file: string; input: string }) {
 		if (Object.entries(this.solutions).length === 0) {
 			Term.error("No solutions defined.");
 			return;
@@ -98,14 +76,10 @@ ${indent(
 		let current = "unknown";
 
 		try {
-			const file = await this.input.text();
+			const file = await Bun.file(options.input).text();
 
-			Term.heading(
-				`${RUN} ${pc.yellow(this.location.file)}`,
-				pc.yellow(FILLER_CHAR)
-			);
-
-			console.log(`${pc.dim("Input:")} ${this.location.input}`);
+			console.log(`\n${RUN} ${pc.yellow(options.file)}\n`);
+			console.log(`${pc.dim("Input:")} ${options.input}`);
 
 			for (const [name, func] of Object.entries(this.solutions)) {
 				current = name;
@@ -122,7 +96,7 @@ ${indent(
 		} catch (error) {
 			if ((error as Error).name === "ENOENT") {
 				Term.error(
-					`Something went wrong reading input file '${this.location.input}'.`
+					`Something went wrong reading input file '${options.input}'.`
 				);
 			} else {
 				Term.error(

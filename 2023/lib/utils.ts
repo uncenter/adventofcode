@@ -8,13 +8,6 @@ export const Term = {
 			""
 		);
 	},
-	heading: function (text: string, filler: string) {
-		text = `  ${text}  `;
-		const fill = filler.repeat(
-			(process.stdout.columns - this.strip(text).length) / 2
-		);
-		console.log(`\n${fill}${text}${fill}\n`);
-	},
 	error: function (message: string) {
 		console.log(pc.bold(pc.red(`Error: ${message}`)));
 		process.exit(1);
@@ -26,3 +19,7 @@ export const indent = (input: string, indent: string) =>
 		.split("\n")
 		.map((line) => indent + line)
 		.join("\n");
+
+export const range = (start: number, end: number): number[] => {
+	return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+};

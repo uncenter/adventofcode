@@ -1,12 +1,17 @@
 {
-  "devDependencies": {
-    "bun-types": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
-  "type": "module",
-  "dependencies": {
-    "picocolors": "^1.0.0"
-  }
+	"scripts": {
+		"format": "biome format . --write"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.4.1",
+		"bun-types": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"picocolors": "^1.0.0",
+		"tiny-bin": "^1.6.3"
+	}
 }
