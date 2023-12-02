@@ -5,15 +5,15 @@
 ## 2023
 
 ```sh
+cd 2023/
+
 bun aoc run <RANGE>
-```
-
-```sh
 bun aoc run 1
-```
-
-```sh
 bun aoc run 3..5
+
+bun aoc test <RANGE>
+bun aoc test 1
+bun aoc test 3..5
 ```
 
 ## 2022
