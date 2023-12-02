@@ -99,9 +99,7 @@ ${indent(
 					`Something went wrong reading input file '${options.input}'.`
 				);
 			} else {
-				Term.error(
-					`Something went wrong while executing solution ${current}...`
-				);
+				throw error;
 			}
 		}
 	}
