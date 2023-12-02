@@ -8,6 +8,13 @@ export const Term = {
 			""
 		);
 	},
+	heading: function (text: string, filler?: string) {
+		text = `  ${text}  `;
+		const fill = (filler || "⎯").repeat(
+			(process.stdout.columns - this.strip(text).length) / 2
+		);
+		console.log(`\n${fill}${text}${fill}\n`);
+	},
 	error: function (message: string) {
 		console.log(pc.bold(pc.red(`Error: ${message}`)));
 		process.exit(1);

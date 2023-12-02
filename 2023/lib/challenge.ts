@@ -35,9 +35,7 @@ ${indent(
 )}
 `);
 		} else {
-			console.log(
-				`${PASS} ${pc.green(`No issues found with solution ${name}.`)}`
-			);
+			console.log(`${PASS} ${pc.green(`Solution ${name} passed.`)}`);
 		}
 		return result === expected;
 	}
@@ -48,7 +46,7 @@ ${indent(
 			return false;
 		}
 
-		console.log(`\n${TEST} ${pc.blue(options.file)}\n`);
+		Term.heading(`${TEST} ${pc.blue(options.file)}`);
 
 		if (this.samples.one) {
 			if (!this.solutions.one) {
@@ -78,7 +76,7 @@ ${indent(
 		try {
 			const file = await Bun.file(options.input).text();
 
-			console.log(`\n${RUN} ${pc.yellow(options.file)}\n`);
+			Term.heading(`${RUN} ${pc.yellow(options.file)}`);
 			console.log(`${pc.dim("Input:")} ${options.input}`);
 
 			for (const [name, func] of Object.entries(this.solutions)) {
