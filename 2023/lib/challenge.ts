@@ -24,14 +24,14 @@ export class Challenge {
 
 		if (result !== expected) {
 			console.log(`${FAIL} ${pc.red(
-				`Received incorrect result from solution ${name}.`
+				`Received incorrect result from solution ${name}.`,
 			)}
 
 ${indent(
 	`${pc.green(`- ${expected}`)}\n${pc.red(`- ${result}`)}\n\n${pc.dim(
-		"Input:"
+		"Input:",
 	)}\n${indent(input, " ".repeat(4))}`,
-	" ".repeat(4)
+	" ".repeat(4),
 )}
 `);
 		} else {
@@ -88,13 +88,15 @@ ${indent(
 				const duration = (performance.now() - start).toFixed(2);
 
 				console.log(
-					`${pc.dim("Result:")} ${result}\n${pc.dim("Duration:")} ${duration}ms`
+					`${pc.dim("Result:")} ${result}\n${pc.dim(
+						"Duration:",
+					)} ${duration}ms`,
 				);
 			}
 		} catch (error) {
 			if ((error as Error).name === "ENOENT") {
 				Term.error(
-					`Something went wrong reading input file '${options.input}'.`
+					`Something went wrong reading input file '${options.input}'.`,
 				);
 			} else {
 				throw error;

@@ -9,7 +9,7 @@ export const one = (data: string) =>
 				.split(" | ")
 				.map((set) => set.split(" ").map((each) => each.trim()));
 			const matches = winners.filter(
-				(winner) => numbers.includes(winner) && winner !== ""
+				(winner) => numbers.includes(winner) && winner !== "",
 			);
 			return matches.length > 0 ? 1 * 2 ** (matches.length - 1) : 0;
 		})
@@ -22,7 +22,7 @@ export const two = (data: string) => {
 			.split(" | ")
 			.map((set) => set.split(" ").map((each) => each.trim()));
 		const matches = winners.filter(
-			(winner) => winner && numbers.includes(winner)
+			(winner) => winner && numbers.includes(winner),
 		);
 		return [matches.length, 1];
 	});
@@ -40,6 +40,7 @@ export const two = (data: string) => {
 	}
 	return total;
 };
+
 export const challenge = new Challenge({
 	samples: {
 		one: [

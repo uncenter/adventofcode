@@ -52,13 +52,13 @@ const init = async (day: string) => {
 
 	await Bun.write(
 		join(import.meta.dir, "../", day, "input.txt"),
-		await res.text()
+		await res.text(),
 	);
 
 	const template = Bun.file(join(import.meta.dir, "resources/template.ts"));
 	await Bun.write(
 		join(import.meta.dir, "../", day, "index.ts"),
-		(await template.text()).split("\n").slice(1).join("\n")
+		(await template.text()).split("\n").slice(1).join("\n"),
 	);
 };
 

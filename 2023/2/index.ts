@@ -26,12 +26,12 @@ export const one = (data: string) =>
 								red: 0,
 								green: 0,
 								blue: 0,
-							}
-						)
+							},
+						),
 				)
 				.some((set) => set.red > 12 || set.green > 13 || set.blue > 14)
 				? 0
-				: Number(game.split(": ")[0].split(" ")[1])
+				: Number(game.split(": ")[0].split(" ")[1]),
 		)
 		.reduce((acc, game, index, games) => acc + game, 0);
 
@@ -62,8 +62,8 @@ export const two = (data: string) =>
 									red: 0,
 									green: 0,
 									blue: 0,
-								}
-							)
+								},
+							),
 					)
 					.reduce(
 						(acc, set, index, sets) => {
@@ -73,9 +73,9 @@ export const two = (data: string) =>
 								blue: set.blue > acc.blue ? set.blue : acc.blue,
 							};
 						},
-						{ red: 0, green: 0, blue: 0 }
-					)
-			).reduce((acc, game, index, games) => acc * game, 1)
+						{ red: 0, green: 0, blue: 0 },
+					),
+			).reduce((acc, game, index, games) => acc * game, 1),
 		)
 		.reduce((acc, game, index, games) => acc + game, 0);
 
